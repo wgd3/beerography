@@ -1,10 +1,10 @@
 from setuptools import setup
 
-setup(name='YourAppName',
+setup(name='Beerography',
       version='1.0',
-      description='OpenShift App',
-      author='Your Name',
-      author_email='example@example.com',
-      url='http://www.python.org/sigs/distutils-sig/',
-      install_requires=['Flask>=0.7.2', 'MarkupSafe'],
+      description='Just how lcal is your beer?',
+      author='Wallace Daniel',
+      author_email='wallace.daniel3@me.com',
+      url='http://beerography-wdaniel.rhcloud.com',
+      install_requires=['Flask', 'MarkupSafe','flask-wtf','sqlalchemy','markdown','flup'],
      )
