@@ -6,5 +6,5 @@ setup(name='Beerography',
       author='Wallace Daniel',
       author_email='wallace.daniel3@me.com',
       url='http://beerography-wdaniel.rhcloud.com',
-      install_requires=['Flask', 'MarkupSafe','flask-wtf','sqlalchemy','markdown','flup'],
+      install_requires=['Flask', 'MarkupSafe','flask-wtf','flask-sqlalchemy','markdown','flup'],
      )
