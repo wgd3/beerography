@@ -13,8 +13,8 @@ def index():
 		beerQuery = request.form['beer-search']
 		if (beerQuery != ''):
 			beerResults = BreweryDb.search({'type':'beer','q':beerQuery})
-			#flash('Query successful')
-			return render_template('index.html', results=beerResults)
+			#flash('Query on successful')
+			return render_template('index.html', results=beerResults, query=beerQuery)
 		else:
 			flash('There was a problem with your search')
 	

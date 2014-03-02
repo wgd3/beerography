@@ -83,9 +83,17 @@ google.maps.event.addDomListener(window, 'load', initialize);
 		<div class="page-header">
 			<h4>Results <small>{{ results.data.length }} results found</small></h4>
 		</div>
+		<form role="form" method="post">
+			<div class="form-group col-xs-9 col-md-9">
+				<input type="text" class="form-control" name="beer-search" id="beer-search" placeholder="{{ query }}">
+			</div>
+			<button type="submit" class="btn btn-info center-block col-xs-3 col-md-3">Beer Me!</button>
+		</form>
+		<div class="clearfix"></div>
 		<ul class="list-group">
 			{% for result in results.data %}
-			<li class="list-group-item">{{result.name}}</li>
+			<li class="list-group-item">{{ result.name }} - {{ result.abv }}%</li>
+
 			{% endfor %}
 		</ul>
 	</div>
@@ -98,10 +106,10 @@ google.maps.event.addDomListener(window, 'load', initialize);
 		</div>
 
 		<form role="form" method="post">
-			<div class="form-group">
+			<div class="form-group col-xs-9 col-md-9">
 				<input type="text" class="form-control" name="beer-search" id="beer-search" placeholder="Enter beer or brewery..">
 			</div>
-			<button type="submit" class="btn btn-info center-block"><a href="{{ url_for('index') }}">Beer Me!</a></button>
+			<button type="submit" class="btn btn-info center-block col-xs-3 col-md-3">Beer Me!</button>
 
 		</form>
 	</div>
