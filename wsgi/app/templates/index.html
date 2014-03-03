@@ -38,11 +38,11 @@ function initialize() {
 
 			map.setCenter(pos);
 		}, function() {
-			handleNoGeoLocation(true);
+			handleNoGeolocation(true);
 		});
 	} else {
 		// browser doesn't support geolocation
-		handleNoGeoLocation(false);
+		handleNoGeolocation(false);
 	}
 }
 		
