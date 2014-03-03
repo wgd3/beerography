@@ -23,9 +23,14 @@
 				<!-- Nav content -->
 				<div class="collapse navbar-collapse" id="navbar-collapse-1">
 					<ul class="nav navbar-nav">
-						<li class="active"><a href="/testing">Testing</a></li>
+						<li><a href="/testing">Testing</a></li>
 						<li><a href="#">Nothing</a></li>
 					</ul>
+					{% if loginSuccess %}
+					<div class="pull-right"<a href="#">{{ user.loginName }}</div>
+					{% else %}
+					<div class="pull-right"><a href="#">UserName</a></div>
+					{% endif %}
 				</div><!-- /.navbar-collapse -->
 			</div><!-- /.container-fluid -->
 		</nav>

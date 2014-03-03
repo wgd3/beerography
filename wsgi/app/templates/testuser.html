@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+	{% if loggedIn %}
+		<div class="alert alert-success">Hello, You're Logged In!</div>	
+	{% else %}
+		<div class="alert alert-warning">Something went wrong.</div>
+	{% endif %}
+
+{% endblock %}

@@ -1,6 +1,15 @@
 {% extends 'base.html' %}
 
 {% block content %}
+
+{% with messages = get_flashed_messages() %}
+	{% if messages %}
+		{% for message in messages %}
+			<div id="alert alert-dismissable">{{ message }}</div>
+		{% endfor %}
+	{% endif %}
+{% endwith %}
+
 <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=true"></script>
 
 <!-- Google Maps code -->
@@ -60,7 +69,15 @@ google.maps.event.addDomListener(window, 'load', initialize);
 
 <div id="map-canvas" style="width: 100%; height: 200px"></div>
 
-<a href="https://untappd.com/oauth/authenticate/?client_id={{ client_id }}&response_type=code&redirect_url=http://localhost:5000/redirect">Log In Untappd</a>
+{% if loggedIn %}
+<div class="row">
+	<div class="alert alert-success">Token Code: {{ token }}</div>
+</div>	
+{% else %}
 
+<div class="row">
+	<a class="test-right" href="https://untappd.com/oauth/authenticate/?client_id={{ client_id }}&response_type=code&redirect_url=http://192.168.2.8:5000/redirect">Log In Untappd</a>
+</div>
+{% endif %}
 
 {% endblock %}
