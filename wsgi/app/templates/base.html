@@ -27,7 +27,7 @@
 						<li><a href="#">Nothing</a></li>
 					</ul>
 					{% if loginSuccess %}
-					<div class="pull-right"<a href="#">{{ user.loginName }}</div>
+					<div class="pull-right"<a href="#">{{ user.response.user.user_name }}</div>
 					{% else %}
 					<div class="pull-right"><a href="#">UserName</a></div>
 					{% endif %}

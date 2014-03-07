@@ -99,7 +99,7 @@ google.maps.event.addDomListener(window, 'load', initialize);
 			<h4>What are you drinking? <small>Search by beer name or brewery</small></h4>
 		</div>
 
-		<form role="form" method="post">
+		<form role="form" action="{{ url_for('search') }}" method="post">
 			<div class="form-group col-xs-9 col-md-9">
 				<input type="text" class="form-control" name="beer-search" id="beer-search" placeholder="Enter beer or brewery..">
 			</div>
