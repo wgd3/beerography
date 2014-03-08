@@ -9,13 +9,17 @@ ACC_TOKEN = ''
 
 app.config['SECRET_KEY'] = 'wallace'
 
-@app.route('/')
-@app.route('/index')
+@app.route('/',methods=['GET','POST'])
+@app.route('/index',methods=['GET','POST'])
 def index():
+
+	# these are variables that are passed to the page on load. the code below checks to see if we have data for the variables
+	user = []
+	loginSuccess = False
 
 	# check to see if the session with valid key has been set
 	if 'token' in session:
-		user = []
+		
 		# create query for basic user info 
 		args = {'access_token':session['token'],'compact':'true'}
 		data = urllib.urlencode(args)
@@ -23,7 +27,9 @@ def index():
 		data_request = urllib2.Request(url)
 		response = urllib2.urlopen(data_request)
 		user_json = json.loads(response.read())
-
+		user = user_json['response']['user']
+	
+		loginSuccess = True
 		# I think we can just send the json data to the jinja2 template for parsing
 		print "Token found in session, sending user json data to page"
 		print "json: "+str(user_json)
@@ -31,17 +37,45 @@ def index():
 		# store basic data
 		uName = user_json['response']['user']['user_name']
 		print uName
-		return render_template('index.html',user=user_json,loginSuccess=True)
+	else:	
+		# session must not be set
+		print "No token found in session, return vanilla template"
 	
-	# session must not be set
-	print "No token found in session, return vanilla template"
-	return render_template('index.html')
+
+	# if it's a post method, someone submitted a search query
+	query_results = []
+	if request.method == 'POST':
+		print "Detected POST request on index, looking for beer!"
+		# user searched for something
+		query = request.form['beer-search']
+		# build args for untappd query
+		if 'token' in session:
+			print "Building authenticated query"
+			args = {'access_token':session['token'],'q':query}
+		else:
+			print "No token found, creating a non-auth'd request"
+			args = {'q':query}
+
+		data = urllib.urlencode(args)
+		url = 'http://api.untappd.com/v4/search/beer?'+data
+		data_request = urllib2.Request(url)
+		response = urllib2.urlopen(data_request)
+		json_response = json.loads(response.read())
+		query_results = json_response['response']['beers']['items']
+#		print "DEBUG: "+str(len(query_results['items']))
+		beers = []
+		for x in range(1, json_response['response']['beers']['count']):
+			print query_results[x]['beer']['beer_name']
+			beers.append(str(query_results[x]['beer']['beer_name']))
+
+
+	return render_template('index.html',user=user,loginSuccess=loginSuccess,beers=beers)
 
 @app.route('/search',methods=['GET','POST'])
 def search():
 
 	print "Loading search page"
-	print request.method
+	#print request.method
 	query = request.form['beer-search']
 	# build args for untappd query
 	args = {'access_token':session['token'],'q':query}
@@ -50,11 +84,14 @@ def search():
 	data_request = urllib2.Request(url)
 	response = urllib2.urlopen(data_request)
 	json_response = json.loads(response.read())
-	beers = json_response['response']['beers']
-	print "Num beers: "+str(beers['count'])
+	beers = json_response['response']['beers']['items']
+
+	numBeers = json_response['response']['beers']['count']
+	print "Num beers: "+str(numBeers)
+
 	breweries = json_response['response']['breweries']
 
-	return redirect(url_for('index'),beers=beers,breweries=breweries)
+	return render_template('index.html',beers=beers,breweries=breweries)
 
 @app.route('/testing')
 def testing():
@@ -78,7 +115,7 @@ def login():
 			
 			print "Found tempCode in request: " + tempCode
 			# create Request object with custom URL
-			token_req = urllib2.Request("https://untappd.com/oauth/authorize/?client_id="+MY_CLIENT_ID+"&client_secret="+MY_CLIENT_SECRET+"&response_type=code&redirect_url=http://localhost:5000/redirect&code="+tempCode)
+			token_req = urllib2.Request("https://untappd.com/oauth/authorize/?client_id="+MY_CLIENT_ID+"&client_secret="+MY_CLIENT_SECRET+"&response_type=code&redirect_url=http://beerography-wdaniel.rhcloud.com/redirect&code="+tempCode)
 			
 			# open the custom URL and store the result
 			token_resp = urllib2.urlopen(token_req)
