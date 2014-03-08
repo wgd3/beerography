@@ -26,7 +26,7 @@
 						{% if user.user_name is defined %}
 						<li><img class="img-responsive" src={{ user.user_avatar }} style="max-height:50px;padding-right:10px"></li>
 						<li><a href="#">Hello, {{ user.first_name }}!</a></li>  
-						<li id="navbar_geo"><a href="#">Location: Not Found</a></li>
+						<li><a href="#" id="navbar_geo">Location: Not Found</a></li>
 						<li><a href="/logout">Logout</a></li>
 						{% else %}
 						<li>
@@ -38,10 +38,12 @@
 			</div><!-- /.container-fluid -->
 		</nav>
 		<div class="container span8">
-		{% with messages = get_flashed_messages() %}
+		{% with messages = get_flashed_messages(with_categories=true) %}
         		{% if messages %}
-                	{% for message in messages %}
-                        	<div class="alert alert-info">{{ message }}</div>
+                	{% for category,message in messages %}
+				<div class="alert alert-{{ category }}">
+					<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>{{ message }}
+				</div>
                 	{% endfor %}
         		{% endif %}
 		{% endwith %}

@@ -86,44 +86,12 @@ def index():
 def session_logout():
 	if 'token' in session:
 		session.pop('token', None)
-		flash("Logged out successfully")
+		flash("Logged out successfully",'success')
 	else:
 		flash('Logout called when no token was found in user session','error')
 		print "/redirect was requested but no token was found in the session"
 
 	return redirect(url_for('index'))
-
-@app.route('/search',methods=['GET','POST'])
-def search():
-
-	print "Loading search page"
-	#print request.method
-	query = request.form['beer-search']
-	# build args for untappd query
-	args = {'access_token':session['token'],'q':query}
-	data = urllib.urlencode(args)
-	url = 'http://api.untappd.com/v4/search/beer?'+data
-	data_request = urllib2.Request(url)
-	response = urllib2.urlopen(data_request)
-	json_response = json.loads(response.read())
-	beers = json_response['response']['beers']['items']
-
-	breweries = json_response['response']['breweries']
-
-	return render_template('index.html',beers=beers,breweries=breweries)
-
-@app.route('/testing')
-def testing():
-
-	# Raleigh coords
-	testLat = 35.855257099999996
-	testLong = -78.7189141
-	range = 30
-	units = 'mi'
-	geo = 1
-
-
-	return render_template('testing.html',client_id=MY_CLIENT_ID)
 
 @app.route('/redirect', methods=['GET'])
 def login():
@@ -148,15 +116,15 @@ def login():
 			ACC_TOKEN = data['response']['access_token']
 			print "Token code found: " + ACC_TOKEN	
 			session['token'] = ACC_TOKEN	
-			flash('Logged in successfully')
+			flash('Logged in successfully','success')
 			loginSuccess = True
 		else:
-			flash("Error getting tempCode for access token")
+			flash("Error getting tempCode for access token",'error')
 			print "Error while obtaining tempCode"
 			loginSuccess = False
 	else:
 		print "Non-GET method for /redirect"
-		flash("Error with redirect")
+		flash("Error with redirect",'error')
 
 	return redirect(url_for('index'))
 
