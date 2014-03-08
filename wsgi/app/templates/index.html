@@ -46,7 +46,8 @@ function initialize() {
 			service = new google.maps.places.PlacesService(map);
 
 			var request = {
-			    bounds: map.getBounds(),
+			    location: pos,
+			    radius: '8000',
 			    keyword: 'brewery'
 			  };
 
