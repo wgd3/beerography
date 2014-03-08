@@ -47,12 +47,12 @@ function initialize() {
 
 			var request = {
 			    location: pos,
-			    radius: '8000',
-			    keyword: 'brewery'
+			    keyword: 'brewery',
+			    rankBy: google.maps.places.RankBy.DISTANCE
 			  };
 
 			// perform search
-			service.radarSearch(request, callback);
+			service.nearbySearch(request, callback);
 			
 
 			var infowindow = new google.maps.InfoWindow({
@@ -76,12 +76,16 @@ function callback(results, status) {
 	    alert(status);
 	    return;
 	  }
-	  for (var i = 0, result; result = results[i]; i++) {
+	  for (var i = 0, 2; result = results[i]; i++) {
 	    console.log("Found results..");
 	    var marker = new google.maps.Marker({
 	      map: map,
 	      position: result.geometry.location,
 	    });
+	    console.log("Found the brewery called: "+result.name);
+	    var curBreweryDivNum = 'closest_brewery_'+str(i+1);
+	    var curBreweryDiv = document.getElementById(curBreweryDivNum);
+	    curBreweryDiv.childNodes[1].innerHTML = result.name;
 	  }
 	}
 
@@ -173,15 +177,15 @@ google.maps.event.addDomListener(window, 'load', initialize);
 		    <div class="panel-heading">
 		      <h4 class="panel-title">
 			<a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
-			  Breweries Close to You
+			  Breweries Closest to You
 			</a>
 		      </h4>
 		    </div>
 		    <div id="collapseOne" class="panel-collapse collapse in">
 		      <div class="panel-body">
-			<div class="col-xs-6 col-md-4"><div class="well">Brewery 1</div><h5 class="text-center">Name</h5></div>		
-			<div class="col-xs-6 col-md-4"><div class="well">Brewery 2</div><h5 class="text-center">Name</h5></div>
-			<div class="hidden-xs hidden-sm col-md-4"><div class="well">Brewery 3</div><h5 class="text-center">Name</h5></div>
+			<div class="col-xs-6 col-md-4" id="close_brewery_1"><div class="well">Brewery 1</div><h5 class="text-center">Name</h5></div>		
+			<div class="col-xs-6 col-md-4" id="close_brewery_2"><div class="well">Brewery 2</div><h5 class="text-center">Name</h5></div>
+			<div class="hidden-xs hidden-sm col-md-4" id="close_brewery_3"><div class="well">Brewery 3</div><h5 class="text-center">Name</h5></div>
 		      </div>
 		    </div>
 		  </div>
