@@ -15,11 +15,9 @@ def index():
 
 	# these are variables that are passed to the page on load. the code below checks to see if we have data for the variables
 	user = []
-	loginSuccess = False
 
 	# check to see if the session with valid key has been set
 	if 'token' in session:
-		
 		# create query for basic user info 
 		args = {'access_token':session['token'],'compact':'true'}
 		data = urllib.urlencode(args)
@@ -29,7 +27,6 @@ def index():
 		user_json = json.loads(response.read())
 		user = user_json['response']['user']
 	
-		loginSuccess = True
 		# I think we can just send the json data to the jinja2 template for parsing
 		print "Token found in session, sending user json data to page"
 		print "json: "+str(user_json)
@@ -64,11 +61,25 @@ def index():
 		query_results = json_response['response']['beers']['items']
 #		print "DEBUG: "+str(len(query_results['items']))
 		for x in range(1, json_response['response']['beers']['count']):
-			print query_results[x]['beer']['beer_name']
-			beers.append(str(query_results[x]['beer']['beer_name']))
+			print query_results[x]['beer']
+			beers.append(query_results[x]['beer'])
 
 
-	return render_template('index.html',user=user,loginSuccess=loginSuccess,beers=beers)
+	return render_template('index.html',
+				user=user,
+				beers=beers,
+				client_id=MY_CLIENT_ID)
+
+@app.route('/logout')
+def session_logout():
+	if 'token' in session:
+		session.pop('token', None)
+		flash("Logged out successfully")
+	else:
+		flash('Logout called when no token was found in user session','error')
+		print "/redirect was requested but no token was found in the session"
+
+	return redirect(url_for('index'))
 
 @app.route('/search',methods=['GET','POST'])
 def search():
@@ -84,9 +95,6 @@ def search():
 	response = urllib2.urlopen(data_request)
 	json_response = json.loads(response.read())
 	beers = json_response['response']['beers']['items']
-
-	numBeers = json_response['response']['beers']['count']
-	print "Num beers: "+str(numBeers)
 
 	breweries = json_response['response']['breweries']
 
@@ -114,7 +122,7 @@ def login():
 			
 			print "Found tempCode in request: " + tempCode
 			# create Request object with custom URL
-			token_req = urllib2.Request("https://untappd.com/oauth/authorize/?client_id="+MY_CLIENT_ID+"&client_secret="+MY_CLIENT_SECRET+"&response_type=code&redirect_url=http://beerography-wdaniel.rhcloud.com/redirect&code="+tempCode)
+			token_req = urllib2.Request("https://untappd.com/oauth/authorize/?client_id="+MY_CLIENT_ID+"&client_secret="+MY_CLIENT_SECRET+"&response_type=code&redirect_url=http://localhost:5000/redirect&code="+tempCode)
 			
 			# open the custom URL and store the result
 			token_resp = urllib2.urlopen(token_req)

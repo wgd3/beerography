@@ -1,14 +1,6 @@
 {% extends 'base.html' %}
 
 {% block content %}
-{% with messages = get_flashed_messages() %}
-	{% if messages %}
-		{% for message in messages %}
-			<div class="alert alert-info">{{ message }}</div>
-		{% endfor %}
-	{% endif %}
-{% endwith %}
-
 <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=true"></script>
 
 <!-- Google Maps code -->
@@ -86,7 +78,7 @@ google.maps.event.addDomListener(window, 'load', initialize);
 		<div class="clearfix"></div>
 		<ul class="list-group">
 			{% for beer in beers %}
-			<li class="list-group-item">{{ beer }} - {{ beer  }}</li>
+			<li class="list-group-item">{{ beer.name }} - {{ beer.beer_abv  }}</li>
 
 			{% endfor %}
 		</ul>
