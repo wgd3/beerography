@@ -78,7 +78,7 @@ function callback(results, status) {
 	    var marker = new google.maps.Marker({
 	      map: map,
 	      position: result.geometry.location,
-	      console.log("Found marker at "+str(position))
+	      console.log("Found marker at "+position.toString())
 	    });
 	  }
 	}
