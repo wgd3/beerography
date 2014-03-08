@@ -85,7 +85,7 @@ function callback(results, status) {
 	    });
 	    console.log("Found the brewery called: "+result.name);
 	    var curBreweryDivNum = i+1;
-	    var curBreweryDivName = 'close_brewery_'+curBreweryDivName.toString();
+	    var curBreweryDivName = 'close_brewery_'+curBreweryDivNum.toString();
 	    console.log("Trying to add \'"+curBreweryDivName+"\' to the accordian");
 	    var curBreweryDiv = document.getElementById(curBreweryDivName);
 	    curBreweryDiv.childNodes[1].innerHTML = result.name;
