@@ -78,14 +78,15 @@ function callback(results, status) {
 	  }
 	  for (var i = 0; i<3; i++) {
 	    var result = results[i];
-	    console.log("Found results number "+str(i));
+	    console.log("Found result number "+i.toString());
 	    var marker = new google.maps.Marker({
 	      map: map,
 	      position: result.geometry.location,
 	    });
 	    console.log("Found the brewery called: "+result.name);
-	    var curBreweryDivNum = 'closest_brewery_'+str(i+1);
-	    var curBreweryDiv = document.getElementById(curBreweryDivNum);
+	    var curBreweryDivNum = i+1;
+	    var curBreweryDivName = 'close_brewery_'+curBreweryDivName.toString();
+	    var curBreweryDiv = document.getElementById(curBreweryDivName);
 	    curBreweryDiv.childNodes[1].innerHTML = result.name;
 	  }
 	}
