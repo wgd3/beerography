@@ -76,8 +76,9 @@ function callback(results, status) {
 	    alert(status);
 	    return;
 	  }
-	  for (var i = 0, 2; result = results[i]; i++) {
-	    console.log("Found results..");
+	  for (var i = 0; i<3; i++) {
+	    var result = results[i];
+	    console.log("Found results number "+str(i));
 	    var marker = new google.maps.Marker({
 	      map: map,
 	      position: result.geometry.location,
