@@ -43,7 +43,7 @@ def index():
 	
 
 	# if it's a post method, someone submitted a search query
-	query_results = []
+	beers = []
 	if request.method == 'POST':
 		print "Detected POST request on index, looking for beer!"
 		# user searched for something
@@ -63,7 +63,6 @@ def index():
 		json_response = json.loads(response.read())
 		query_results = json_response['response']['beers']['items']
 #		print "DEBUG: "+str(len(query_results['items']))
-		beers = []
 		for x in range(1, json_response['response']['beers']['count']):
 			print query_results[x]['beer']['beer_name']
 			beers.append(str(query_results[x]['beer']['beer_name']))
