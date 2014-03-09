@@ -26,10 +26,11 @@
 						{% if user.user_name is defined %}
 						<li><img class="img-responsive" src={{ user.user_avatar }} style="max-height:50px;padding-right:10px"></li>
 						<li><a href="#">Hello, {{ user.first_name }}!</a></li>  
+						<li id="navbar_geo"><a href="#">Location: Not Found</a></li>
 						<li><a href="/logout">Logout</a></li>
 						{% else %}
 						<li>
-						<a href="https://untappd.com/oauth/authenticate/?client_id={{ client_id }}&response_type=code&redirect_url=http://beerography-wdaniel.rhcloud.com/redirect">Log In To Untappd</a>
+						<a href="https://untappd.com/oauth/authenticate/?client_id={{ client_id }}&response_type=code&redirect_url=http://localhost:5000/redirect">Log In To Untappd</a>
 						</li>
 						{% endif %}
 					</ul>
@@ -51,7 +52,7 @@
 			<!-- Footer -->
 			<div class="row" style="background: black">
 				<div class="col-xs-12 col-md-4"><img src="/static/js/untappd_small_white.png" class="img-responsive center-block"></div>
-				<div class="col-xs-12 col-md-4">footer 2</div>
+				<div class="col-xs-12 col-md-4"><a href="#"><small>Copyright Wallace Daniel 2014 | Distributed under the MIT License</a></small></div>
 				<div class="col-xs-12 col-md-4"><img src="/static/js/openshift_white.png" class="img-responsive center-block"></div>
 			</div> 
 		</div>
