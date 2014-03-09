@@ -10,7 +10,7 @@ var map;
 
 function initialize() {
 	var mapOptions = {
-		zoom: 12
+		zoom: 10
 	};
 	var location_div = document.getElementById('navbar_geo');
 
@@ -52,18 +52,6 @@ function initialize() {
 			// perform search
 			service.radarSearch(request, callback);
 			
-			function callback(results, status) {
-			  if (status != google.maps.places.PlacesServiceStatus.OK) {
-			    alert(status);
-			    return;
-			  }
-			  for (var i = 0, result; result = results[i]; i++) {
-			    var marker = new google.maps.Marker({
-			      map: map,
-			      position: result.geometry.location
-			    });
-			  }
-			}
 
 			var infowindow = new google.maps.InfoWindow({
 				map: map,
@@ -81,6 +69,20 @@ function initialize() {
 	}
 }
 		
+function callback(results, status) {
+  if (status != google.maps.places.PlacesServiceStatus.OK) {
+	    alert(status);
+	    return;
+	  }
+	  for (var i = 0, result; result = results[i]; i++) {
+	    var marker = new google.maps.Marker({
+	      map: map,
+	      position: result.geometry.location,
+	      console.log("Found marker at "+str(position))
+	    });
+	  }
+	}
+
 function handleNoGeolocation(errorFlag) {
 	if (errorFlag) {
 		var content = 'Error: Geolocation service failed';
