@@ -111,7 +111,7 @@ google.maps.event.addDomListener(window, 'load', initialize);
 		{% if beers|length != 0 %}
 			<div class="panel panel-default" style="max-height: 265px;overflow: auto">
 				<div class="panel-heading">
-					<h4>Results <small>{{ beers.count }} results found</small></h4>
+					<h4>Results <small>{{ beers|length }} results found</small></h4>
 				</div>
 			
 				<table class="table">
@@ -123,11 +123,11 @@ google.maps.event.addDomListener(window, 'load', initialize);
 						</tr>
 					</thead>
 					<tbody>
-						{% for beer in beers %}
+						{% for item in beers %}
 						<tr>
-							<td>{{ beer.beer.beer_name }}</td>
-							<td>{{ beer.brewery }}</td>
-							<td>{{ beer.beer.beer_style }}</td>
+							<td>{{ item.beer.beer_name }}</td>
+							<td>{{ item.brewery.brewery_name }}</td>
+							<td>{{ item.beer.beer_style }}</td>
 						</tr>
 						{% endfor %}
 					</tbody>
