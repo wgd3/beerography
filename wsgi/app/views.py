@@ -64,7 +64,7 @@ def index():
 			print query_results[x]['beer']
 			beers.append(query_results[x]['beer'])
 
-
+	print "Made it through session checking, rendering index template"
 	return render_template('index.html',
 				user=user,
 				beers=beers,
