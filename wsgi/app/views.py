@@ -70,11 +70,11 @@ def index():
 		data_request = urllib2.Request(url)
 		response = urllib2.urlopen(data_request)
 		json_response = json.loads(response.read())
-		query_results = json_response['response']['beers']['items']
+		query_results = json_response['response']['beers']
 #		print "DEBUG: "+str(len(query_results['items']))
 		for x in range(1, json_response['response']['beers']['count']):
-			print query_results[x]['beer']
-			beers.append(query_results[x]['beer'])
+			print query_results['items'][x]
+			beers.append(query_results['items'][x])
 
 	print "Made it through session checking, rendering index template"
 	return render_template('index.html',
