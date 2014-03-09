@@ -28,6 +28,10 @@ def index():
     			response = urllib2.urlopen(data_request)
 			user_json = json.loads(response.read())
 			user = user_json['response']['user']
+
+			# I think we can just send the json data to the jinja2 template for parsing
+			print "Token found in session, sending user json data to page"
+			print "json: "+str(user_json)
 		except urllib2.HTTPError, e:
     			print 'HTTPError = ' + str(e.code)
 		except urllib2.URLError, e:
@@ -38,9 +42,7 @@ def index():
     			import traceback
     			print 'generic exception: ' + traceback.format_exc()
 	
-		# I think we can just send the json data to the jinja2 template for parsing
-		print "Token found in session, sending user json data to page"
-		print "json: "+str(user_json)
+
 		
 		# store basic data
 		uName = user_json['response']['user']['user_name']
