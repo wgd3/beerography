@@ -63,7 +63,7 @@ def index():
 			args = {'access_token':session['token'],'q':query}
 		else:
 			print "No token found, creating a non-auth'd request"
-			args = {'q':query}
+			args = {'client_id':MY_CLIENT_ID,'client_secret':MY_CLIENT_SECRET,'q':query}
 
 		data = urllib.urlencode(args)
 		url = 'http://api.untappd.com/v4/search/beer?'+data
