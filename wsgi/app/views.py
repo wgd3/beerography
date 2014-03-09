@@ -1,7 +1,8 @@
 from app import app
 import json
 from flask import Flask,request,render_template,redirect,url_for,flash,session
-import urllib2,urllib
+import urllib2
+import urllib
 
 MY_CLIENT_ID = "C361DB96FBB835383819048F80A189EC40DE1FB2"
 MY_CLIENT_SECRET = "9A3A9169B14B23A48C7EECEF2E29692986671872"
