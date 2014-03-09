@@ -134,7 +134,7 @@ def login():
 			
 			print "Found tempCode in request: " + tempCode
 			# create Request object with custom URL
-			token_req = urllib2.Request("https://untappd.com/oauth/authorize/?client_id="+MY_CLIENT_ID+"&client_secret="+MY_CLIENT_SECRET+"&response_type=code&redirect_url=http://localhost:5000/redirect&code="+tempCode)
+			token_req = urllib2.Request("https://untappd.com/oauth/authorize/?client_id="+MY_CLIENT_ID+"&client_secret="+MY_CLIENT_SECRET+"&response_type=code&redirect_url=http://beerography-wdaniel.rhcloud.com/redirect&code="+tempCode)
 			
 			# open the custom URL and store the result
 			token_resp = urllib2.urlopen(token_req)
