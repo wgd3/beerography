@@ -153,7 +153,6 @@ def untappd_url(method, query_dict):
         
 		# JSON-ify the output for easier parsing
 		json_response = json.loads(response.read())	
-		flash('Logged in successfully!','success')
 
 		return json_response
 	except urllib2.HTTPError, e:
