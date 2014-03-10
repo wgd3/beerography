@@ -49,7 +49,8 @@ def index():
 	return render_template('index.html',
 				user=user,
 				beers=beers,
-				client_id=MY_CLIENT_ID)
+				client_id=MY_CLIENT_ID,
+				located=session['located'])
 
 @app.route('/logout')
 def session_logout():
@@ -265,10 +266,12 @@ def log_google_debug(message):
 	'''
 	Return Google API related debug messages
 	'''
-	return "[Google][DEBUG] "+message
+	print "[Google][DEBUG] "+message
+	return True
 
 def log_google_error(message):
 	'''
 	Return Google API related errors
 	'''
-	return "[Google][ERROR] "+message
+	print "[Google][ERROR] "+message
+	return True

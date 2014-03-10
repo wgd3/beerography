@@ -26,7 +26,9 @@ function initialize() {
 		navigator.geolocation.getCurrentPosition(function(position) {
 			var pos = new google.maps.LatLng(position.coords.latitude,
 							position.coords.longitude);
-
+			// the point here is to log the LatLng right after it's found to the user's session (via the GET request)
+			// if located=True and is passed to the page, this gets skipped and the map is created and centered
+			// using the data stored in the session
 			$.get(
 				url="/location",
 				data={'lat':position.coords.latitude,'long':position.coords.longitude},
