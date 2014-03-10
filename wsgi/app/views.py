@@ -103,20 +103,20 @@ def login():
 
 	return redirect(url_for('index'))
 
-@app.route('/location',methods=['GET'])
+@app.route('/location',methods=['GET','POST'])
 def set_location():
-	if request.method == 'GET':
-		log_google_debug("Received a GET response on the location page")
+	if request.method == 'POST':
+		log_google_debug("Received a POST response on the location page")
 		try:
-			user_lat = request.args.get('lat')
-			user_long = request.args.get('long')
+			user_lat = request.json('lat')
+			user_long = request.json('long')
 			log_google_debug("Found coordinates: "+user_lat+", "+user_long)
 			session['located'] = True
 			session['lat'] = user_lat
 			session['long'] = user_long
 			log_google_debug("Added geolocation data to user cookie")
 		except:
-			log_google_error("Something went wrong reading coordinates from the GET request, nothing added to user cookie")
+			log_google_error("Something went wrong reading coordinates from the POST request, nothing added to user cookie")
 	return True 
 
 def untappd_url(method, query_dict):
