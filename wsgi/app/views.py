@@ -37,7 +37,7 @@ def index():
 			log_untappd_debug("Grabbed JSON search results, found "+str(search_result['response']['beers']['count'])+' results')		
 			beer_results = search_result['response']['beers']
 			
-			for x in range(1, search_result['response']['beers']['count']):
+			for x in range(0, search_result['response']['beers']['count']):
 				# Create a list of JSON formatted beer objects so it's easier to parse in Jinja2 template
 				beers.append(beer_results['items'][x])
 
@@ -93,6 +93,22 @@ def login():
 		flash("Error with redirect",'error')
 
 	return redirect(url_for('index'))
+
+@app.route('/location',methods=['GET'])
+def set_location():
+	if request.method == 'GET':
+		log_google_debug("Received a GET response on the location page")
+		try:
+			user_lat = request.args.get('lat')
+			user_long = request.args.get('long')
+			log_google_debug("Found coordinates: "+user_lat+", "+user_long)
+			session['located'] = True
+			session['lat'] = user_lat
+			session['long'] = user_long
+			log_google_debug("Added geolocation data to user cookie")
+		except:
+			log_google_error("Something went wrong reading coordinates from the GET request, nothing added to user cookie")
+	return True 
 
 def untappd_url(method, query_dict):
 	'''
@@ -172,6 +188,10 @@ def populate_user_cookie():
 		session['last_name'] = user['last_name']
 		session['user_avatar'] = user['user_avatar']
 		log_untappd_debug("Set cookie for "+session['first_name']+" "+session['last_name'])
+		
+		# Start working with the Google API for geolocation
+		
+
 		return True
 
 	log_untappd_error("Somehow we tried to populate the user cookie, and there wasn't a token in the session already")
@@ -190,6 +210,53 @@ def log_untappd_error(message):
 	'''
 	print "[Untappd][ERROR] "+message
 	return True
+
+def google_url(method, query_dict):
+	'''
+	Method for building Google API queries and return JSON formatted results. 
+	This method will also check for whether or not a user is authenticated.
+	'''
+	log_google_debug("Building Google API URL query")
+	log_google_debug("Method: "+method)
+	log_google_debug("Arguments: "+str(query_dict))
+
+	base_url = 'https://maps.googleapis.com/maps/api/geocode/json?'
+	
+	# create query with some standard parameters
+	log_google_debug("Adding API key, sensor to parameters")
+	auth_dict = {'key':GOOGLE_API,'sensor':'true'}
+
+	# merge dictionaries
+	merged_dict = dict(auth_dict,**query_dict)
+	log_google_debug("Merged dictionary value: "+str(merged_dict))
+
+	# encode URL arguments
+	encoded_args = urllib.urlencode(merged_dict)
+
+	# pull entire URL together
+	full_url = base_url+encoded_args
+	log_google_debug("Full URL query: "+full_url)
+
+	# wrap request/response in try loop so the server doesn't crap out
+        try:
+		request = urllib2.Request(full_url)
+        	response = urllib2.urlopen(request)
+        
+		# JSON-ify the output for easier parsing
+		json_response = json.loads(response.read())	
+
+		return json_response
+	except urllib2.HTTPError, e:
+                log_untappd_error('HTTPError = ' + str(e.code))
+        except urllib2.URLError, e:
+                log_untappd_error('URLError = ' + str(e.reason))
+        except httplib.HTTPException, e:
+		log_untappd_error('HTTPException')
+        except Exception:
+                import traceback
+                log_untappd_error("Traceback: "+traceback.format_exc())
+        
+	return False
 
 def log_google_debug(message):
 	'''

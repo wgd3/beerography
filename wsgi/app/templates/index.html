@@ -2,12 +2,11 @@
 
 {% block content %}
 <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=true"></script>
-<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?libraries=places&sensor=true"></script>
+
 <!-- Google Maps code -->
 <script>
 
 var map;
-var service;
 
 function initialize() {
 	var mapOptions = {
@@ -20,11 +19,21 @@ function initialize() {
 	map = new google.maps.Map(document.getElementById('map-canvas'),
 		mapOptions);
 
+
+	{% if not located %}
 	// Try HTML5 geolocation
 	if(navigator.geolocation) {
 		navigator.geolocation.getCurrentPosition(function(position) {
 			var pos = new google.maps.LatLng(position.coords.latitude,
 							position.coords.longitude);
+
+			$.get(
+				url="/location",
+				data={'lat':position.coords.latitude,'long':position.coords.longitude},
+				success=function(data){
+					console.log("Issuing GET request with "+data['lat']+" and "+data['long'])
+				}
+			);
 
 			//debug
 			console.log("Found coords: "+pos.toString());
@@ -46,13 +55,12 @@ function initialize() {
 			service = new google.maps.places.PlacesService(map);
 
 			var request = {
-			    location: pos,
-			    keyword: 'brewery',
-			    rankBy: google.maps.places.RankBy.DISTANCE
+			    bounds: map.getBounds(),
+			    keyword: 'brewery'
 			  };
 
 			// perform search
-			service.nearbySearch(request, callback);
+			service.radarSearch(request, callback);
 			
 
 			var infowindow = new google.maps.InfoWindow({
@@ -68,7 +76,11 @@ function initialize() {
 	} else {
 		// browser doesn't support geolocation
 		handleNoGeolocation(false);
-	}
+	} 
+	{% else %}
+	var pos = new google.maps.LatLng({{ lat }},{{ long }})
+	map.setCenter(pos)
+	{% endif %}
 }
 		
 function callback(results, status) {
@@ -76,19 +88,12 @@ function callback(results, status) {
 	    alert(status);
 	    return;
 	  }
-	  for (var i = 0; i<3; i++) {
-	    var result = results[i];
-	    console.log("Found result number "+i.toString());
+	  for (var i = 0, result; result = results[i]; i++) {
 	    var marker = new google.maps.Marker({
 	      map: map,
 	      position: result.geometry.location,
+	      console.log("Found marker at "+str(position))
 	    });
-	    console.log("Found the brewery called: "+result.name);
-	    var curBreweryDivNum = i+1;
-	    var curBreweryDivName = 'close_brewery_'+curBreweryDivNum.toString();
-	    console.log("Trying to add \'"+curBreweryDivName+"\' to the accordian");
-	    var curBreweryDiv = document.getElementById(curBreweryDivName);
-	    curBreweryDiv.childNodes[1].innerHTML = result.name;
 	  }
 	}
 
@@ -180,15 +185,15 @@ google.maps.event.addDomListener(window, 'load', initialize);
 		    <div class="panel-heading">
 		      <h4 class="panel-title">
 			<a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
-			  Breweries Closest to You
+			  Breweries Close to You
 			</a>
 		      </h4>
 		    </div>
 		    <div id="collapseOne" class="panel-collapse collapse in">
 		      <div class="panel-body">
-			<div class="col-xs-6 col-md-4" id="close_brewery_1"><div class="well">Brewery 1</div><h5 class="text-center">Name</h5></div>		
-			<div class="col-xs-6 col-md-4" id="close_brewery_2"><div class="well">Brewery 2</div><h5 class="text-center">Name</h5></div>
-			<div class="hidden-xs hidden-sm col-md-4" id="close_brewery_3"><div class="well">Brewery 3</div><h5 class="text-center">Name</h5></div>
+			<div class="col-xs-6 col-md-4"><div class="well">Brewery 1</div><h5 class="text-center">Name</h5></div>		
+			<div class="col-xs-6 col-md-4"><div class="well">Brewery 2</div><h5 class="text-center">Name</h5></div>
+			<div class="hidden-xs hidden-sm col-md-4"><div class="well">Brewery 3</div><h5 class="text-center">Name</h5></div>
 		      </div>
 		    </div>
 		  </div>
