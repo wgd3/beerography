@@ -20,8 +20,12 @@ def index():
 	beers = [] 
 
 	# See if someone is logged in. If so, retreive their info and display it
-	if 'json' in session:
-		user = session['json']
+	if 'token' in session:
+		if 'json' in session:
+			log_untappd_debug("Found both JSON and token in user session")
+			user = session['json']
+		else:
+			log_untappd_debug("Found token in user session, but no JSON data to parse")
 
 	# if it's a post method, someone submitted a search query
 	if request.method == 'POST':
@@ -50,7 +54,7 @@ def index():
 @app.route('/logout')
 def session_logout():
 	if 'token' in session:
-		session.pop('token', None)
+		session.clear()
 		flash("Logged out successfully",'success')
 	else:
 		flash('Logout called when no token was found in user session','error')
