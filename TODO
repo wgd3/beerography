@@ -1,0 +1,17 @@
+TODO List:
+
+High Prio
+=========
+- Fix footer logos and add in the Google API badge as well
+
+- If geolocation fails, fall back to Untappd user info
+  - If user is not logged in, revert to Raleigh
+
+- Query breweries in Google based on location. 
+  - Compare these results to what is in Untappd (should only be 3-4 breweries, maybe 2 requests per berwery)
+
+Ideas
+=====
+- Rearrange layout to 2 horizontal scroll bars for beer/brewery results
+
+

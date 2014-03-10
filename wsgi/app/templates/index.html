@@ -33,9 +33,10 @@ function initialize() {
 				type:"POST",
 				url:"/location",
 				data:{'lat':position.coords.latitude,'long':position.coords.longitude},
+				dataType: 'json',
 				contentType: 'application/json;charset=UTF-8',
 				success:function(data){
-					console.log("Issuing GET request with "+data['lat']+" and "+data['long'])
+					console.log("Issuing POST request with "+data['lat']+" and "+data['long'])
 				},
 				dataType: "json"
 			});

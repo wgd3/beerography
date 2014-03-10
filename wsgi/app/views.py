@@ -9,7 +9,7 @@ MY_CLIENT_SECRET = "9A3A9169B14B23A48C7EECEF2E29692986671872"
 ACC_TOKEN = ''
 GOOGLE_API = 'AIzaSyA8WHx49VXTHoaoIdZfvH56HdTC5IFVz-U'
 
-app.config['SECRET_KEY'] = 'wallace'
+app.config['SECRET_KEY'] = 'X\xe7\x07\xaf\xb5\xe99\x88\xbd\xf3\xbe\xb5\xc6/\xd3M_7\x0e;\xf4V+\x91'
 
 @app.route('/',methods=['GET','POST'])
 @app.route('/index',methods=['GET','POST'])
