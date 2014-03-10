@@ -117,7 +117,7 @@ def set_location():
 			log_google_debug("Added geolocation data to user cookie")
 		except:
 			log_google_error("Something went wrong reading coordinates from the POST request, nothing added to user cookie")
-	return True 
+	return redirect(url_for('index')) 
 
 def untappd_url(method, query_dict):
 	'''
