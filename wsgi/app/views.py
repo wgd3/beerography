@@ -29,7 +29,7 @@ def index():
 
 		# user searched for something
 		search_query = request.form['beer-search']
-		search_result = untappd_url('search/beer',{'p':search_query,'sort':'count'})
+		search_result = untappd_url('search/beer',{'q':search_query,'sort':'count'})
 		if search_result == False:
 			# The above variable is assigned False if something went wrong with the request
 			flash('POST request failed - results not returned','error')
