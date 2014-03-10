@@ -132,7 +132,7 @@ def untappd_url(method, query_dict):
 	# wrap request/response in try loop so the server doesn't crap out
         try:
 		request = urllib2.Request(full_url)
-        	response = urllib2.urlopen(data_request)
+        	response = urllib2.urlopen(request)
         
 		# JSON-ify the output for easier parsing
 		json_reaponse = json.loads(response.read())	
