@@ -85,12 +85,9 @@ def login():
 			session['token'] = ACC_TOKEN
 			populate_user_cookie()				
 
-			flash('Logged in successfully','success')
-			loginSuccess = True
 		else:
 			flash("Error getting tempCode for access token",'error')
 			print "Error while obtaining tempCode"
-			loginSuccess = False
 	else:
 		print "Non-GET method for /redirect"
 		flash("Error with redirect",'error')
@@ -135,7 +132,8 @@ def untappd_url(method, query_dict):
         	response = urllib2.urlopen(request)
         
 		# JSON-ify the output for easier parsing
-		json_reaponse = json.loads(response.read())	
+		json_response = json.loads(response.read())	
+		flash('Logged in successfully!','success')
 
 		return json_response
 	except urllib2.HTTPError, e:
