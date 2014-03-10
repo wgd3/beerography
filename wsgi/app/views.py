@@ -34,7 +34,7 @@ def index():
 			# The above variable is assigned False if something went wrong with the request
 			flash('POST request failed - results not returned','error')
 		else:	
-			log_untappd_debug("Grabbed JSON search results, found "+search_result['response']['beers']['count']+' results')		
+			log_untappd_debug("Grabbed JSON search results, found "+str(search_result['response']['beers']['count'])+' results')		
 			beer_results = search_result['response']['beers']
 			
 			for x in range(1, search_result['response']['beers']['count']):
