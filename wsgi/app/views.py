@@ -17,7 +17,7 @@ def index():
 
 	# these are variables that are passed to the page on load. the code below checks to see if we have data for the variables
 	user = ''
-	beers = ''
+	beers = [] 
 
 	# See if someone is logged in. If so, retreive their info and display it
 	if 'json' in session:
