@@ -19,6 +19,10 @@ def index():
 	user = ''
 	beers = [] 
 
+	# the first time this page is loaded the session will be empty, this needs to be populated
+	if 'located' not in session:
+		session['located'] = False
+
 	# See if someone is logged in. If so, retreive their info and display it
 	if 'token' in session:
 		if 'json' in session:
